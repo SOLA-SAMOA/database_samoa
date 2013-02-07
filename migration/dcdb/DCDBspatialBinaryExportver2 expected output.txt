@@ -1,0 +1,79 @@
+Drop Rtree : dbo.COURTGRANTREFERENCEPOINT
+Despatialize : dbo.COURTGRANTREFERENCEPOINT
+Drop Rtree : dbo.DCDBPARCELPOLYGON
+Despatialize : dbo.DCDBPARCELPOLYGON
+Drop Rtree : dbo.FLURPOLYGON
+Despatialize : dbo.FLURPOLYGON
+Drop Rtree : dbo.HYDROPOLYGON
+Despatialize : dbo.HYDROPOLYGON
+Drop Rtree : dbo.RECORDMAPINDEXSHEETS
+Despatialize : dbo.RECORDMAPINDEXSHEETS
+Drop Rtree : dbo.ROADCENTRELINESEGMENT
+Despatialize : dbo.ROADCENTRELINESEGMENT
+Drop Rtree : dbo.ROADPOLYGON
+Despatialize : dbo.ROADPOLYGON
+Drop Rtree : dbo.SURVEYPLANREFERENCEPOINT
+Despatialize : dbo.SURVEYPLANREFERENCEPOINT
+Drop Rtree : dbo.TOPOFEATUREPOINT
+Despatialize : dbo.TOPOFEATUREPOINT
+Drop Rtree : dbo.TOPOFEATURESEGMENT
+Despatialize : dbo.TOPOFEATURESEGMENT
+Drop Rtree : dbo.UPGRADEDRSOUTLINEPOLYGON
+Despatialize : dbo.UPGRADEDRSOUTLINEPOLYGON
+Drop Rtree : dbo.GEODETICMARKPOINT
+Despatialize : dbo.GEODETICMARKPOINT
+Drop Rtree : DBO.ROADCENTRELINESEGMENT2
+Despatialize : DBO.ROADCENTRELINESEGMENT2
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+Caution: Changing any part of an object name could break scripts and stored procedures.
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+
+(1 row(s) affected)
+Spatialize : dbo.COURTGRANTREFERENCEPOINT
+Create Rtree : dbo.COURTGRANTREFERENCEPOINT
+Spatialize : dbo.DCDBPARCELPOLYGON
+Create Rtree : dbo.DCDBPARCELPOLYGON
+Spatialize : dbo.FLURPOLYGON
+Create Rtree : dbo.FLURPOLYGON
+Spatialize : dbo.HYDROPOLYGON
+Create Rtree : dbo.HYDROPOLYGON
+Spatialize : dbo.RECORDMAPINDEXSHEETS
+Create Rtree : dbo.RECORDMAPINDEXSHEETS
+Spatialize : dbo.ROADPOLYGON
+Create Rtree : dbo.ROADPOLYGON
+Spatialize : dbo.SURVEYPLANREFERENCEPOINT
+Create Rtree : dbo.SURVEYPLANREFERENCEPOINT
+Spatialize : dbo.TOPOFEATUREPOINT
+Create Rtree : dbo.TOPOFEATUREPOINT
+Spatialize : dbo.TOPOFEATURESEGMENT
+Create Rtree : dbo.TOPOFEATURESEGMENT
+Spatialize : dbo.UPGRADEDRSOUTLINEPOLYGON
+Create Rtree : dbo.UPGRADEDRSOUTLINEPOLYGON
+Spatialize : dbo.GEODETICMARKPOINT
+Create Rtree : dbo.GEODETICMARKPOINT
+Spatialize : DBO.ROADCENTRELINESEGMENT
+Create Rtree : DBO.ROADCENTRELINESEGMENT

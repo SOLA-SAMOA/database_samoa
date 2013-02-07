@@ -1,0 +1,14 @@
+# Subfolders to ignore
+logs/
+
+# Files to ignore 
+Thumbs.db
+thumbs.db
+*.log
+test-data/samoa/*.sql
+# Do not upload samoa data 
+test-data/samoa/samoa.7z
+backup/alpha-release-waiheke.backup
+
+#Ingore temporary vpp files
+*.vpp~*
