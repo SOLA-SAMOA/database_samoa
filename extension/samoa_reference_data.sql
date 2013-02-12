@@ -263,7 +263,7 @@ INSERT INTO application.request_type(code, request_category_code, display_value,
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('regnOnTitle','registrationServices','Record Memorial::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('regnOnTitle','registrationServices','Change Right or Restriction::::SAMOAN','c',5,100.00,0.00,0.00,1,
 	'<memorial>',NULL,'vary','Miscellaneous');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
