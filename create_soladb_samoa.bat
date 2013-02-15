@@ -71,7 +71,7 @@ REM git repository. To obtain access to this file, contact Andrew McDowell - and
 echo Extracting Samoa data files...
 echo Extracting Samoa data files... >> build.log 2>&1
 %testDataPath%7z.exe e -y -p%archive_password% -o%testDataPath% %testDataPath%samoa.7z >> build.log 2>&1
-%testDataPath%7z.exe e -y -o%testDataPath% %testDataPath%samoaDev.7z >> build.log 2>&1
+%testDataPath%7z.exe e -y -p%archive_password% -o%testDataPath% %testDataPath%samoaDev.7z >> build.log 2>&1
 
 REM Load the Samoa test data. 
 REM Direct standard output to NUL, but capture any errors in the build.log
