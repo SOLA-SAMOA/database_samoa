@@ -728,67 +728,7 @@ BEGIN
    FROM  application.request_type req, 
 	 application.request_category_type cat
    WHERE req.status = 'c'
-   AND   cat.code = req.request_category_code
-   UNION 
-   -- Summarise overall totals for the reporting period
-   SELECT 'TOTAL' AS req_type,
-          'Totals' AS req_cat, 
-           10 AS group_idx,
-	  (SELECT COUNT(s.id) FROM service_in_progress_from s, app_in_progress_from a
-   WHERE s.application_id = a.id
-   AND   a.status_code = 'lodged')::INT AS in_progress_from,
-  (SELECT COUNT(s.id) FROM service_in_progress_from s, app_in_progress_from a
-   WHERE s.application_id = a.id
-   AND   a.status_code = 'requisitioned')::INT AS on_requisition_from, 
-      -- Don't count services automatically created by SOLA without reference 
-	  -- to an application such as the Print Map Service. 
-	  (SELECT COUNT(s.id) FROM application.service s
-	  WHERE lodging_datetime BETWEEN from_date AND to_date
-	  AND s.application_id IS NOT NULL)::INT AS lodged,
-	 (SELECT COUNT(s.id) FROM app_changed a, application.service s
-          WHERE s.application_id = a.id
-	  AND   a.status_code = 'requisitioned'
-	  AND   s.lodging_datetime < to_date
-	  AND   NOT EXISTS (SELECT can.id FROM service_cancelled can
-                        WHERE s.id = can.id))::INT AS requisitioned, 
-     (SELECT COUNT(s.id) FROM app_changed a, application.service s
-	   WHERE s.application_id = a.id
-	   AND   a.status_code = 'approved'
-	   AND   s.status_code = 'completed')::INT AS registered, 
-	 (SELECT COUNT(tmp.id) FROM 
-	     (SELECT s.id FROM app_changed a, application.service s
-	      WHERE s.application_id = a.id
-	      AND   a.status_code = 'annulled'
-	      AND   a.withdrawn = FALSE
-          UNION		  
-	      SELECT s.id FROM app_changed a, service_cancelled s
-	      WHERE s.application_id = a.id
-	      AND   a.status_code != 'annulled') AS tmp )::INT AS cancelled, 
-	  (SELECT COUNT(*) FROM app_changed a, application.service s
-	   WHERE s.application_id = a.id
-	   AND   a.status_code = 'annulled'
-	   AND   a.withdrawn = TRUE)::INT AS withdrawn,
-	  (SELECT COUNT(s.id) FROM service_in_progress s, app_in_progress a
-           WHERE s.application_id = a.id
-           AND   a.status_code = 'lodged')::INT AS in_progress_to,
-          (SELECT COUNT(s.id) FROM service_in_progress s, app_in_progress a
-           WHERE s.application_id = a.id
-           AND   a.status_code = 'requisitioned')::INT AS on_requisition_to, 
-          (SELECT COUNT(s.id) FROM service_in_progress s, app_in_progress a
-           WHERE s.application_id = a.id
-           AND   a.status_code = 'lodged' 
-           AND   a.expected_completion_date < to_date
-	   AND   s.expected_completion_date < to_date)::INT AS overdue,
-	  (SELECT string_agg(a.nr, ', ') FROM app_in_progress a
-           WHERE a.status_code = 'lodged' 
-           AND   a.expected_completion_date < to_date
-           AND   EXISTS (SELECT s.application_id FROM service_in_progress s
-                         WHERE s.application_id = a.id
-                         AND   s.expected_completion_date < to_date)) AS overdue_apps,
-	 (SELECT string_agg(a.nr, ', ') FROM app_in_progress a
-          WHERE a.status_code = 'requisitioned' 
-          AND   EXISTS (SELECT s.application_id FROM service_in_progress s
-                        WHERE s.application_id = a.id)) AS requisition_apps 						 
+   AND   cat.code = req.request_category_code					 
    ORDER BY group_idx, req_type;
 	
    END; $BODY$
