@@ -435,6 +435,8 @@ CREATE UNIQUE INDEX ba_unit_name_unique_ind
 
    
 -- Lodgement Report Functions
+-- Update to Lodgement Statistics Report Function 
+-- *** To be run on sola_prod and the sola_training database
 CREATE OR REPLACE FUNCTION application.get_work_summary(from_date DATE, to_date DATE)
   RETURNS TABLE (
       req_type VARCHAR(100), -- The service request type
@@ -473,9 +475,24 @@ BEGIN
    to_date := to_date + 1; 
 
    RETURN query 
+   
+      -- Identifies all services lodged during the reporting period. Uses the
+	  -- change_time instead of lodging_datetime to ensure all datetime comparisons 
+	  -- across all subqueries yield consistent results 
+      WITH service_lodged AS
+	   ( SELECT ser.id, ser.application_id, ser.request_type_code
+         FROM   application.service ser
+         WHERE  ser.change_time BETWEEN from_date AND to_date
+		 AND    ser.rowversion = 1
+		 UNION
+         SELECT ser_hist.id, ser_hist.application_id, ser_hist.request_type_code
+         FROM   application.service_historic ser_hist
+         WHERE  ser_hist.change_time BETWEEN from_date AND to_date
+		 AND    ser_hist.rowversion = 1),
+		 
       -- Identifies all services cancelled during the reporting period. Once cancelled
-	  -- a service cannot be reinstated, so only need to check the application.service table. 
-      WITH service_cancelled AS 
+	  -- a service cannot be reinstated, so only need to check the application.service table. 	  
+	  service_cancelled AS 
         (SELECT ser.id, ser.application_id, ser.request_type_code
          FROM   application.service ser
          WHERE  ser.change_time BETWEEN from_date AND to_date
@@ -487,8 +504,9 @@ BEGIN
                           WHERE ser_hist.id = ser.id
                           AND  (ser.rowversion - 1) = ser_hist.rowversion
                           AND  ser.status_code = ser_hist.status_code )),
-		                       
-      service_in_progress AS (  -- All services in progress at the end of the reporting period
+		
+      -- All services in progress at the end of the reporting period		
+      service_in_progress AS (  
          SELECT ser.id, ser.application_id, ser.request_type_code, ser.expected_completion_date
 	 FROM application.service ser
 	 WHERE ser.change_time <= to_date
@@ -508,8 +526,9 @@ BEGIN
 				      FROM  application.service_historic ser_hist2
 				      WHERE ser_hist.id = ser_hist2.id
 				      AND   ser_hist2.change_time <= to_date )),
-					  
-	service_in_progress_from AS (  -- All services in progress at the start of the reporting period
+	
+    -- All services in progress at the start of the reporting period	
+	service_in_progress_from AS ( 
      SELECT ser.id, ser.application_id, ser.request_type_code, ser.expected_completion_date
 	 FROM application.service ser
 	 WHERE ser.change_time <= from_date
@@ -625,13 +644,9 @@ BEGIN
           AND   a.status_code = 'requisitioned'
 	  AND s.request_type_code = req.code)::INT AS on_requisition_from,
 	     
-	  -- Count the services lodged during the reporting period. Note that
-	  -- new services can be added to an existing application, so
-	  -- use the service lodged date to count the services lodged rather 
-	  -- than the application lodged date. 
-	 (SELECT COUNT(s.id) FROM application.service s
-	  WHERE s.lodging_datetime BETWEEN from_date AND to_date
-	  AND s.request_type_code = req.code)::INT AS lodged,
+	  -- Count the services lodged during the reporting period.
+	 (SELECT COUNT(s.id) FROM service_lodged s
+	  WHERE s.request_type_code = req.code)::INT AS lodged,
 	  
       -- Count the applications that were requisitioned during the
 	  -- reporting period. All of the services on the application
