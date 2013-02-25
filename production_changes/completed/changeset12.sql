@@ -1,4 +1,30 @@
--- xx Feb 2012
+-- 25 Feb 2012
+
+-- Ticket #89 Fixes compare strings to allow spaces to be entered into the search strings
+CREATE OR REPLACE FUNCTION compare_strings(string1 character varying, string2 character varying)
+  RETURNS boolean AS
+$BODY$
+  DECLARE
+    rec record;
+    result boolean;
+  BEGIN
+      result = false;
+      for rec in select regexp_split_to_table(lower(string1),'[^a-z0-9\\s]') as word loop
+          if rec.word != '' then 
+            if not string2 ~* rec.word then
+                return false;
+            end if;
+            result = true;
+          end if;
+      end loop;
+      return result;
+  END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION compare_strings(character varying, character varying)
+  OWNER TO postgres;
+COMMENT ON FUNCTION compare_strings(character varying, character varying) IS 'Special string compare function.';
 
 -- Ticket 81 - add RCL's for road polygons created since SOLA Samoa golive. 
 INSERT INTO cadastre.spatial_unit (id, change_user, label, level_id, geom) VALUES ('b99812c8-7a1a-11e2-8b2c-8f2c412d8054', 'ticket81', NULL, '1434363e-3430-11e2-a0e5-3f974f0fbad5', ST_SetSRID(ST_GeomFromText('LINESTRING(404511.610230789 8468387.27360241,404673.365935426 8468360.13522029)'),32702));
