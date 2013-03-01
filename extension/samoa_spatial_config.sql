@@ -1007,10 +1007,17 @@ WHERE "name" = 'system_search.cadastre_object_by_baunit_id';
 UPDATE system.query SET sql = 
 'select distinct co.id,  ba_unit.name_firstpart || ''/'' || ba_unit.name_lastpart || '' > '' || cadastre.formatParcelNr(co.name_firstpart, co.name_lastpart) as label,  st_asewkb(geom_polygon) as the_geom from cadastre.cadastre_object  co    inner join administrative.ba_unit_contains_spatial_unit bas on co.id = bas.spatial_unit_id     inner join administrative.ba_unit on ba_unit.id = bas.ba_unit_id  where (co.status_code= ''current'' or ba_unit.status_code= ''current'') and co.geom_polygon IS NOT NULL  and compare_strings(#{search_string}, ba_unit.name_firstpart || '' / '' || ba_unit.name_lastpart) limit 30'
  WHERE "name" = 'map_search.cadastre_object_by_baunit';
- 
+
+-- #89 Updated Map Find by Parcel Number to match functionality of Parcel Search 
 UPDATE system.query SET sql = 
-'select id, cadastre.formatParcelNr(name_firstpart, name_lastpart) as label, st_asewkb(geom_polygon) as the_geom  from cadastre.cadastre_object  where status_code= ''current'' and geom_polygon IS NOT NULL and compare_strings(#{search_string}, name_firstpart || '' PLAN '' || name_lastpart) limit 30'
- WHERE "name" = 'map_search.cadastre_object_by_number';
+'SELECT id, cadastre.formatParcelNr(name_firstpart, name_lastpart) as label, st_asewkb(geom_polygon) as the_geom  
+ FROM cadastre.cadastre_object  
+ WHERE status_code= ''current'' 
+ AND geom_polygon IS NOT NULL 
+ AND compare_strings(#{search_string}, name_firstpart || '' PLAN '' || name_lastpart) 
+ ORDER BY lpad(regexp_replace(name_firstpart, ''\\D*'', '''', ''g''), 5, ''0'') || name_firstpart || name_lastpart
+ LIMIT 30'
+WHERE "name" = 'map_search.cadastre_object_by_number';
  
 UPDATE system.query SET sql = 
 'select co.id, cadastre.formatParcelNrLabel(co.name_firstpart, co.name_lastpart) as label,  st_asewkb(co.geom_polygon) as the_geom from cadastre.cadastre_object co inner join administrative.ba_unit_contains_spatial_unit ba_co on co.id = ba_co.spatial_unit_id   inner join administrative.ba_unit ba_unit on ba_unit.id= ba_co.ba_unit_id where co.type_code=''parcel'' and co.status_code= ''historic'' and ba_unit.status_code = ''current'' and ST_Intersects(co.geom_polygon, ST_SetSRID(ST_MakeBox3D(ST_Point(#{minx}, #{miny}),ST_Point(#{maxx}, #{maxy})), #{srid}))'
