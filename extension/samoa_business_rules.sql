@@ -266,5 +266,14 @@ UPDATE system.br_definition SET active_until = '2013-01-31' WHERE br_id = 'servi
 
 DELETE FROM system.br_validation WHERE br_id in ('application-verifies-identification', 'service-has-person-verification');
 
+-- *** Changeset14.sql ***
+-- #94 Total Share BR check gives false failures
+UPDATE system.br_definition SET "body" = '
+SELECT (SUM(nominator::DECIMAL/denominator::DECIMAL)*10000)::INT = 10000  AS vl
+FROM   administrative.rrr_share 
+WHERE  rrr_id = #{id}
+AND    denominator != 0'
+WHERE br_id = 'rrr-shares-total-check';
+
 
 
