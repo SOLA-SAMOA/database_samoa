@@ -19,9 +19,20 @@ WHERE spatial_unit_id IN
   AND name_firstpart = '190');
 
 -- Fix the area for the ba unit 190/3776
-UPDATE administrative.spatial_value_area
+UPDATE administrative.ba_unit_area
 SET size = 20235
-WHERE spatial_unit_id IN 
- (SELECT id from cadastre.cadastre_object
+WHERE ba_unit_id IN 
+ (SELECT id from administrative.ba_unit
   WHERE name_lastpart = '3776'
   AND name_firstpart = '190');
+  
+  -- Fix the area for the parcel 187/3732L
+UPDATE cadastre.spatial_value_area
+SET size = 202343
+WHERE spatial_unit_id IN 
+ (SELECT id from cadastre.cadastre_object
+  WHERE name_lastpart = '3732L'
+  AND name_firstpart = '187');
+  
+-- Remove the fee for changes to the miscellaneous services. 
+UPDATE application.request_type SET base_fee = 0 WHERE rrr_type_code = 'miscellaneous';
