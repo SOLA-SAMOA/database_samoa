@@ -34,5 +34,5 @@ WHERE spatial_unit_id IN
   WHERE name_lastpart = '3732L'
   AND name_firstpart = '187');
   
--- Remove the fee for changes to the miscellaneous services. 
-UPDATE application.request_type SET base_fee = 0 WHERE rrr_type_code = 'miscellaneous';
+-- #101 Remove the fee for charges for the Cancel Miscellaneous Service. 
+UPDATE application.request_type SET base_fee = 0 WHERE code = 'cancelMisc';
