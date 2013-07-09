@@ -316,6 +316,8 @@ BEGIN
 	AND		rt.code = ser.request_type_code; 
 	
 	IF (category = 'cadastralServices') THEN
+	    -- Cadastral Services - list the parcels created
+		-- or affected by the service
 		FOR rec IN 
 			SELECT co.name_firstpart as parcel_num,
 				   co.name_lastpart  as plan
@@ -337,7 +339,10 @@ BEGIN
 		IF name != '' THEN  
 			name = name || ' PLAN ' || plan;
 		END IF;		
-		
+	ELSE IF (category = 'applicationServices') THEN
+		-- Application Services - list the date this service
+		-- is expected to be actioned by
+	
 	ELSE
 	    -- Registration Services	
 		FOR rec IN 
