@@ -104,13 +104,14 @@ WHERE br_id = 'generate-application-nr';
 
 -- Reconfigure BA Unit (i.e. Property Numbering). Remove all leading characters from the 
 -- co.name_firstpart to leave the number only unless the parcel is a unit parcel . If not CO
--- the assign a lot number for the 200000 plan. Also trim plan number as per changeset08.sql
+-- the assign a lot number for the 200000 plan. Also trim plan number as per changeset08.sql and
+-- fix name_firstpart regex (Ticket #111)
 UPDATE system.br_definition SET "body" = 'SELECT CASE WHEN CAST(#{cadastreObjectId} AS VARCHAR(40)) IS NOT NULL
-	THEN (SELECT (CASE WHEN co.type_code = ''parcel'' THEN regexp_replace(co.name_firstpart, ''\D*'',  '''') ELSE co.name_firstpart END) 
+	THEN (SELECT (CASE WHEN co.type_code = ''parcel'' THEN regexp_replace(co.name_firstpart, ''\D*|/.*'',  '''', ''g'') ELSE co.name_firstpart END) 
 	        || ''/'' || regexp_replace(co.name_lastpart, ''[\s|L|l]$'',  '''') FROM cadastre.cadastre_object co WHERE id = #{cadastreObjectId})
 	ELSE (SELECT to_char(now(), ''yymm'') || trim(to_char(nextval(''administrative.ba_unit_first_name_part_seq''), ''0000''))
 			|| ''/200000'') END AS vl'
-WHERE br_id = 'generate-baunit-nr'; 
+WHERE br_id = 'generate-baunit-nr';
  
  
 -- *** 18-Nov-2012 TO BE REMOVED FOLLOWING SUITABLE TESTING OF NEW NUMBERING... 
