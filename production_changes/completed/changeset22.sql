@@ -1,4 +1,4 @@
--- 9 Oct 2013 Ticket #112
+-- 9 Oct 2013 Changeset #112
 
 -- Remove all data created for plan 7286
 UPDATE cadastre.cadastre_object 
