@@ -342,7 +342,7 @@ INSERT INTO application.request_type(code, request_category_code, display_value,
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('proclamation','registrationServices','Record Proclamation::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('proclamation','registrationServices','Record Proclamation::::SAMOAN','c',5,0.00,0.00,0.00,1,
 	'Proclamation <proclamation>','proclamation','new','Proclamation');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
@@ -378,7 +378,7 @@ INSERT INTO application.request_type(code, request_category_code, display_value,
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('removeProclamation','registrationServices','Cancel Proclamation::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('removeProclamation','registrationServices','Cancel Proclamation::::SAMOAN','c',5,0.00,0.00,0.00,1,
 	'Proclamation <reference> cancelled','proclamation','cancel','Revocation of Proclamation');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
