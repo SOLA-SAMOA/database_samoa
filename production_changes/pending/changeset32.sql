@@ -190,4 +190,32 @@ WHERE NOT EXISTS (SELECT approle_code FROM system.approle_appgroup
 -- Force everyone to change their passwords. 				
 UPDATE system.appuser SET passwd = '_' || passwd, change_user = 'andrew';
 UPDATE system.appuser set passwd = substring(passwd from 2 for length(passwd)- 1);
+
+-- #104 - Report number of times CFC is printed. 
+
+CREATE TABLE administrative.certificate_print
+(
+  id character varying(40) NOT NULL, -- Identifier for the certificate print table
+  ba_unit_id character varying(40), -- The identifier of the ba_unit that had a certificate printed.
+  certificate_type character varying(40), -- The type of certificate that was printed. One of Folio Certificate, Staff Search or Historical Search
+  print_time timestamp without time zone, -- The time the certificate was generated.
+  print_user character varying(40), -- The user that printed the certificate.
+  comment character varying(500), -- Any comment relating to the print such as the client name
+  CONSTRAINT certificate_print_pkey PRIMARY KEY (id),
+  CONSTRAINT certificate_print_ba_unit_fkey FOREIGN KEY (ba_unit_id)
+      REFERENCES administrative.ba_unit (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE
+);
+ALTER TABLE administrative.certificate_print
+  OWNER TO postgres;
+COMMENT ON TABLE administrative.certificate_print
+  IS 'Records a complete history of when a Computer Folio Certifcate is printed for a property. ';
+COMMENT ON COLUMN administrative.certificate_print.ba_unit_id IS 'The identifier of the ba_unit that had a certificate printed. ';
+COMMENT ON COLUMN administrative.certificate_print.certificate_type IS 'The type of certificate that was printed. One of Folio Certificate, Staff Search or Historical Search';
+COMMENT ON COLUMN administrative.certificate_print.print_time IS 'The time the certificate was generated. ';
+COMMENT ON COLUMN administrative.certificate_print.comment IS 'Any comment relating to the print such as the client name';
+COMMENT ON COLUMN administrative.certificate_print.print_user IS 'The user that printed the certificate. ';
+COMMENT ON COLUMN administrative.certificate_print.id IS 'Identifier for the certificate print table ';
+
+
     
