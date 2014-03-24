@@ -67,6 +67,10 @@ ADD change_action character(1) NOT NULL DEFAULT 'i'::bpchar,
 ADD change_user character varying(50),
 ADD change_time timestamp without time zone NOT NULL DEFAULT now();
 
+
+DELETE FROM system.appuser_appgroup
+WHERE NOT EXISTS (SELECT id FROM system.appuser WHERE id = system.appuser_appgroup.appuser_id);
+
 UPDATE system.appuser_appgroup 
 SET rowversion = 1,
     change_user = 'db:postgres'; 
