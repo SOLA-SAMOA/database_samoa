@@ -68,8 +68,8 @@ ADD change_user character varying(50),
 ADD change_time timestamp without time zone NOT NULL DEFAULT now();
 
 
-DELETE FROM system.appuser_appgroup
-WHERE NOT EXISTS (SELECT id FROM system.appuser WHERE id = system.appuser_appgroup.appuser_id);
+DELETE FROM system.appuser_appgroup g
+WHERE NOT EXISTS (SELECT id FROM system.appuser WHERE id = g.appuser_id);
 
 UPDATE system.appuser_appgroup 
 SET rowversion = 1,

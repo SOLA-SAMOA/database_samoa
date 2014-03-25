@@ -591,6 +591,8 @@ INSERT INTO source.administrative_source_type (code,display_value,status,is_for_
 VALUES ('traverse','Traverse Sheet::::SAMOAN','c','FALSE');
 INSERT INTO source.administrative_source_type (code,display_value,status,is_for_registration)
 VALUES ('flurPlan','Flur Plan::::SAMOAN','c','FALSE');
+INSERT INTO source.administrative_source_type (code,display_value,status,is_for_registration)
+VALUES ('courtJudgement','Lands and Titles Court Judgement::::SAMOAN','c','FALSE');
 
 
 
