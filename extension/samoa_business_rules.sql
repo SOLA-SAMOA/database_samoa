@@ -276,5 +276,27 @@ WHERE  rrr_id = #{id}
 AND    denominator != 0'
 WHERE br_id = 'rrr-shares-total-check';
 
+-- Ticket #133 Updates to existing business rules to allow surveys across roads
+-- to be completed
+UPDATE system.br_validation
+SET severity_code = 'medium'
+WHERE br_id = 'target-parcels-check-isapolygon';
+
+UPDATE system.br_definition
+SET body = 'WITH target AS 
+(SELECT st_union(co.geom_polygon) AS target_geom
+ FROM   cadastre.cadastre_object co 
+ WHERE  id in (SELECT cadastre_object_id 
+               FROM cadastre.cadastre_object_target  
+               WHERE transaction_id = #{id})),
+pending AS 
+(SELECT st_union(co.geom_polygon) AS pend_geom
+ FROM   cadastre.cadastre_object co 
+ WHERE   transaction_id = #{id})
+SELECT st_contains(st_buffer(target.target_geom, system.get_setting(''map-tolerance'')::double precision), pending.pend_geom)
+       AND st_contains(st_buffer(pending.pend_geom, system.get_setting(''map-tolerance'')::double precision), target.target_geom) AS vl
+FROM target, pending'
+WHERE br_id = 'target-and-new-union-the-same';
+
 
 
