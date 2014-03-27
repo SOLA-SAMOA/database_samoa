@@ -203,7 +203,7 @@ VALUES ('system', 'System', 'x', 'Groups RRRs that exist solely to support SOLA 
 INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is_primary, share_check, party_required, status, description)
     VALUES ('primary', 'system', 'Primary', FALSE, FALSE, FALSE, 'x', 'System RRR type used by SOLA to represent the group of primary rights.');
 INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is_primary, share_check, party_required, status, description)
-    VALUES ('easement', 'system', 'Easement', FALSE, FALSE, FALSE, 'x', 'System RRR type used by SOLA to represent the group of rights associated with easements (i.e. servitude and dominant.');
+    VALUES ('easement', 'system', 'Easement Group', FALSE, FALSE, FALSE, 'x', 'System RRR type used by SOLA to represent the group of rights associated with easements (i.e. servitude and dominant.');
 INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is_primary, share_check, party_required, status, description)
     VALUES ('customaryType', 'rights', 'Customary::::SAMOAN', TRUE, TRUE, TRUE, 'c', 'Primary right indicating the property is owned under customary title.');
 INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is_primary, share_check, party_required, status, description)
@@ -225,9 +225,9 @@ INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is
 INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is_primary, share_check, party_required, status, description)
     VALUES ('lifeEstate', 'restrictions', 'Life Estate::::SAMOAN', FALSE, FALSE, TRUE, 'c', 'Indicates the property is subject to a life estate.');
 INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is_primary, share_check, party_required, status, description)
-    VALUES ('servitude', 'restrictions', 'Servient Estate::::SAMOAN', FALSE, FALSE, FALSE, 'c', 'Indicates the property is subject to an easement as the servient estate.');
+    VALUES ('servitude', 'restrictions', 'Easement::::SAMOAN', FALSE, FALSE, FALSE, 'c', 'Indicates the property is subject to an easement as the servient estate.');
 INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is_primary, share_check, party_required, status, description)
-    VALUES ('dominant', 'rights', 'Dominant Estate::::SAMOAN', FALSE, FALSE, FALSE, 'c', 'Indicates the property has been granted rights to an easement over another property as the dominant estate.');
+    VALUES ('dominant', 'rights', 'Dominant Estate::::SAMOAN', FALSE, FALSE, FALSE, 'x', 'Indicates the property has been granted rights to an easement over another property as the dominant estate.');
 INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is_primary, share_check, party_required, status, description)
     VALUES ('transmission', 'rights', 'Transmission::::SAMOAN', FALSE, FALSE, TRUE, 'c', 'Transmission.');
 INSERT INTO administrative.rrr_type(code, rrr_group_type_code, display_value, is_primary, share_check, party_required, status, description)
@@ -287,38 +287,29 @@ INSERT INTO application.request_type(code, request_category_code, display_value,
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('easement','registrationServices','Record Easement::::SAMOAN','c',5,100.00,0.00,0.00,1,
-	'Servient <easement type> over <parcel1> in favour of <parcel2> / Dominant <easement type>
-	in favour of <parcel1> over <parcel2>','easement','new','Easement');
+    VALUES ('easement','registrationServices','Record Easement::::SAMOAN','c',5,0.00,0.00,0.00,1,
+	'Subject to Memorandum of Easements endorsed thereon');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('removeEasement','registrationServices','Cancel Easement::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('removeEasement','registrationServices','Cancel Easement::::SAMOAN','c',5,0.00,0.00,0.00,1,
 	'Easement <reference> cancelled','easement','cancel','Cancel Easement');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('caveat','registrationServices','Record Caveat::::SAMOAN','c',5,100.00,0.00,0.00,1,
-	'Caveat in the name of <name>','caveat','new','Caveat');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('removeCaveat','registrationServices','Cancel Caveat::::SAMOAN','c',5,100.00,0.00,0.00,1,
-	'Caveat <reference> cancelled','caveat','cancel','Withdrawal of Caveat');
-INSERT INTO application.request_type(code, request_category_code, display_value, 
-            status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
-            nr_properties_required, notation_template, rrr_type_code, type_action_code, 
-            description)
-    VALUES ('varyLease','registrationServices','Change Lease or Sublease::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('varyLease','registrationServices','Variation of Lease or Sublease::::SAMOAN','c',5,100.00,0.00,0.00,1,
 	'Variation of lease <reference> for <nn> years to <name> until <date>','lease','vary','Transfer or Renew Lease');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('removeRight','registrationServices','Cancel Lease or Sublease::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('removeRight','registrationServices','Termination of Lease or Sublease::::SAMOAN','c',5,0.00,0.00,0.00,1,
 	'Lease <reference> cancelled','lease','cancel','Terminate Lease');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
@@ -330,20 +321,20 @@ INSERT INTO application.request_type(code, request_category_code, display_value,
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('removeRestriction','registrationServices','Cancel Mortgage::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('removeRestriction','registrationServices','Discharge of Mortgage::::SAMOAN','c',5,100.00,0.00,0.00,1,
 	'Mortgage <reference> cancelled','mortgage','cancel','Discharge of Mortgage');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('variationMortgage','registrationServices','Change Mortgage::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('variationMortgage','registrationServices','Variation of Mortgage::::SAMOAN','c',5,100.00,0.00,0.00,1,
 	'Variation of mortgage <reference>','mortgage','vary','Variation of Mortgage');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
     VALUES ('proclamation','registrationServices','Record Proclamation::::SAMOAN','c',5,0.00,0.00,0.00,1,
-	'Proclamation <proclamation>','proclamation','new','Proclamation');
+	'Proclamation <proclamation>','primary', null,'Proclamation');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
@@ -372,13 +363,13 @@ INSERT INTO application.request_type(code, request_category_code, display_value,
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('removeOrder','registrationServices','Cancel Court Order::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('removeOrder','registrationServices','Remove Court Order::::SAMOAN','c',5,100.00,0.00,0.00,1,
 	'Court Order <reference> cancelled','order','cancel','Revocation of Order');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('removeProclamation','registrationServices','Cancel Proclamation::::SAMOAN','c',5,0.00,0.00,0.00,1,
+    VALUES ('removeProclamation','registrationServices','Cancel Proclamation::::SAMOAN','x',5,0.00,0.00,0.00,1,
 	'Proclamation <reference> cancelled','proclamation','cancel','Revocation of Proclamation');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
@@ -392,6 +383,18 @@ INSERT INTO application.request_type(code, request_category_code, display_value,
             description)
     VALUES ('varyCaveat','registrationServices','Change Caveat::::SAMOAN','c',5,100.00,0.00,0.00,1,
 	'Variation of caveat <reference>','caveat','vary','Variation of Caveat');
+INSERT INTO application.request_type(code, request_category_code, display_value, 
+            status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
+            nr_properties_required, notation_template, rrr_type_code, type_action_code, 
+            description)
+    VALUES ('removeCaveat','registrationServices','Cancel Caveat::::SAMOAN','c',5,100.00,0.00,0.00,1,
+	'Variation of caveat <reference>','caveat','cancel','Variation of Caveat');
+INSERT INTO application.request_type(code, request_category_code, display_value, 
+            status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
+            nr_properties_required, notation_template, rrr_type_code, type_action_code, 
+            description)
+    VALUES ('lapseCaveat','registrationServices','Lapse of Caveat::::SAMOAN','c',5,0.00,0.00,0.00,1,
+	'Variation of caveat <reference>','caveat','cancel','Variation of Caveat');
 	
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
@@ -409,14 +412,14 @@ INSERT INTO application.request_type(code, request_category_code, display_value,
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('miscellaneous','registrationServices','Record Miscellaneous::::SAMOAN','c',5,100.00,0.00,0.00,1,
+    VALUES ('miscellaneous','registrationServices','Record Memorial::::SAMOAN','c',5,100.00,0.00,0.00,1,
 	'<memorial>','miscellaneous','new','Miscellaneous');
 	
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('cancelMisc','registrationServices','Cancel Miscellaneous::::SAMOAN','c',5,0.00,0.00,0.00,1,
+    VALUES ('cancelMisc','registrationServices','Cancel Memorial::::SAMOAN','c',5,0.00,0.00,0.00,1,
 	'Miscellaneous <reference> canceled','miscellaneous','cancel','Cancel Miscellaneous');
 	
 -- Special zero fee services
@@ -472,7 +475,7 @@ INSERT INTO application.request_type(code, request_category_code, display_value,
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
             nr_properties_required, notation_template, rrr_type_code, type_action_code, 
             description)
-    VALUES ('cnclPowerOfAttorney','nonRegServices','Cancel Power of Attorney::::SAMOAN','c',3,100.00,0.00,0.00,0,
+    VALUES ('cnclPowerOfAttorney','nonRegServices','Revoke Power of Attorney::::SAMOAN','c',3,100.00,0.00,0.00,0,
 	NULL,NULL,'cancel','Revocation of Power of Attorney');
 INSERT INTO application.request_type(code, request_category_code, display_value, 
             status, nr_days_to_complete, base_fee, area_base_fee, value_base_fee, 
